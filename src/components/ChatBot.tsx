@@ -58,7 +58,7 @@ export type UserMessage = {
 function ChatBot({
   apiKey,
   prompt,
-  model = "",
+  model = "gemini-2.0-flash",
   header = "ChatOrbit",
   temperature = 0.7,
   useContext = false,

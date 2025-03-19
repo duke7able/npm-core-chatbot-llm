@@ -55,7 +55,7 @@ export async function sendMessageToModel({
   tone,
   useEmoji,
 }: SendMessageToModelParams) {
-  const apiUrl = ``;
+  const apiUrl = `https://generativelanguage.googleapis.com/v1/models/${modelName}:generateContent`;
   // adding prompt
   let enhancedSystemPrompt = "";
   if (goodFormatting) {
@@ -71,7 +71,7 @@ export async function sendMessageToModel({
 
   let formattedMessages: Message[] = [];
   if (approach) {
-    approach.forEach((pair) => {
+    approach.forEach(pair => {
       formattedMessages.push({
         role: "user",
         parts: [{ text: pair.user }],
@@ -108,46 +108,30 @@ export async function sendMessageToModel({
     }
   }
 
-  // const requestBody = {
-  //   contents: formattedMessages,
-  //   generationConfig: {
-  //     temperature: temperature,
-  //     maxOutputTokens: apiMaxOutputTokens,
-  //   },
-  // };
-
-  // Check if URL correct for the API
-  // const response = await fetch(`${apiUrl}?key=${apiKey}`, {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify(requestBody),
-  // });
-
-  // if (!response.ok) {
-  //   const errorData = await response.json();
-  //   throw new Error(
-  //     errorData.error?.message || "Failed to get response from Model",
-  //   );
-  // }
-
-  // const data: ModelApiResponse = await response.json();
-  // Sample Output
-  const data: ModelApiResponse = {
-    candidates: [
-      {
-        text: "Hi, this is a test message.",
-        content: {
-          parts: [
-            {
-              text: "Hi, this is a test message.",
-            },
-          ],
-        },
-      },
-    ],
+  const requestBody = {
+    contents: formattedMessages,
+    generationConfig: {
+      temperature: temperature,
+      maxOutputTokens: apiMaxOutputTokens,
+    },
   };
+
+  const response = await fetch(`${apiUrl}?key=${apiKey}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(requestBody),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(
+      errorData.error?.message || "Failed to get response from Gemini"
+    );
+  }
+
+  const data: ModelApiResponse = await response.json();
 
   let uuid = localStorage.getItem("userUUID");
   if (!uuid) {
@@ -181,6 +165,6 @@ export async function sendMessageToModel({
   ) {
     return data;
   } else {
-    throw new Error("Unexpected response format from Model API");
+    throw new Error("Unexpected response format from Gemini API");
   }
 }
