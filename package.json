@@ -5,17 +5,24 @@
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
   "scripts": {
+    "prepublish": "rm -rf ./dist && npm run build",
     "build": "npx tsc",
     "build:rollup": "npx rollup -c"
   },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
   "keywords": [
     "react",
-    "ai",
+    "AI",
     "react-component",
-    "chatbot"
+    "chatbot",
+    "component"
   ],
-  "author": "Asambhav Solution",
-  "license": "ISC",
+  "author": "Shreyan Mehta",
+  "license": "MIT",
+  "private": false,
   "description": "Chat bot based on react",
   "peerDependencies": {
     "@emotion/react": "^11.14.0",
