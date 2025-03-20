@@ -80,7 +80,7 @@ export type ChatProps = {
   APIAccessToken?: string;
   APIHttpMethod?: "POST" | "GET" | "PUT";
   chatBotHeight?:string;
-  chatbotWidth?:string;
+  chatBotWidth?:string;
   leadFormHeader?:string;
   leadFormDescription?:string;
   leadFormButtonText?:string;
@@ -111,7 +111,7 @@ const Chat = ({
   APIAccessToken = "",
   APIHttpMethod = "POST",
   chatBotHeight,
-  chatbotWidth,
+  chatBotWidth,
 }: ChatProps) => {
   const [isRecording, setIsRecording] = useState<boolean>(false);
   const [recognition, setRecognition] = useState<any>(null);
@@ -352,7 +352,7 @@ const Chat = ({
         </IconButton>
       )}
 
-      <ChatContainer open={isChatOpen} chatbotWidth={chatbotWidth} chatBotHeight={chatBotHeight}>
+      <ChatContainer open={isChatOpen} chatBotWidth={chatBotWidth} chatBotHeight={chatBotHeight}>
         <ChatHeader themeColor={themeColor}>
           <ChatTitle>
             <StyleImage>
