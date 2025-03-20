@@ -17,7 +17,7 @@ interface StyledProps {
   textPosition?: boolean;
   backGroundImage?: string;
   open?: boolean;
-  chatbotWidth?: string | number;
+  chatBotWidth?: string | number;
   chatBotHeight?: string | number;
 }
 
@@ -33,7 +33,7 @@ export const slideIn = keyframes`
 `;
 
 export const ChatContainer = styled(Box) <StyledProps>`
-  max-width: ${(props) => (props.chatbotWidth ? props.chatbotWidth : '400px')};
+  max-width: ${(props) => (props.chatBotWidth ? props.chatBotWidth : '400px')};
   height: ${(props) => (props.chatBotHeight ? props.chatBotHeight : '600px')};
   display: flex;
   flex-direction: column;

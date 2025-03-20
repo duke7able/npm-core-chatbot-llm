@@ -10,7 +10,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Fix
 
-- Fixed wrong notation of width from `chatbotWeight` to `chatbotWidth`.
+- Fixed wrong notation of width from `chatBotWeight` to `chatBotWidth`.
 
 ## 1.3.9 (2025-03-12)
 
