@@ -1,8 +1,14 @@
-# React Chatbot Core
+# React Gemini Chatbot
 
-A modern, customizable React chatbot component that can be integrated with LLM APIs. This package provides a complete UI solution with voice input, emoji picker, file attachments, and markdown rendering capabilities.
+A modern, customizable React chatbot component that integrates with Google's Gemini AI API. This package provides a complete UI solution with voice input, emoji picker, file attachments, and markdown rendering capabilities.
 
 ## Badges
+
+[![NPM Version](https://img.shields.io/npm/v/react-gemini-chatbot)](https://www.npmjs.com/package/react-gemini-chatbot)
+[![License](https://img.shields.io/npm/l/react-gemini-chatbot)](https://opensource.org/licenses/MIT)
+[![Build Status](https://img.shields.io/badge/Status-Success-brightgreen)](https://github.com/duke7able/react-gemini-chatbot)
+[![GitHub Stars](https://img.shields.io/github/stars/duke7able/react-gemini-chatbot?style=social)](https://github.com/duke7able/react-gemini-chatbot)
+[![React Version](https://img.shields.io/npm/dependency-version/react-gemini-chatbot/peer/react)](https://www.npmjs.com/package/react)[![Node Version](https://img.shields.io/static/v1?label=Node&message=v18&color=green)](https://nodejs.org/)
 
 ### Style & Framework
 
@@ -24,7 +30,7 @@ A modern, customizable React chatbot component that can be integrated with LLM A
 ### Demo
 
 <p align="center">
-  <img src="/public/newchatbot.gif" alt="React Core Chatbot" width="35%" height="50%" />
+  <img src="/public/newchatbot.gif" alt="React Gemini Chatbot" width="35%" height="50%" />
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   <img src="/public/newleadform.gif" alt="lead form video" width="35%" height="50%"/>
@@ -32,6 +38,7 @@ A modern, customizable React chatbot component that can be integrated with LLM A
 
 ## Features
 
+- 🤖 Integration with Google Gemini AI API
 - 💬 Modern chat interface with animations
 - 🎨 Beautiful UI with gradient backgrounds
 - 🎙️ Voice input support (speech-to-text)
@@ -46,34 +53,50 @@ A modern, customizable React chatbot component that can be integrated with LLM A
 ## Installation
 
 ```bash
-npm install react-chatbot-core
+npm install react-gemini-chatbot
 # or
-yarn add react-chatbot-core
+yarn add react-gemini-chatbot
 ```
 
-*Note:* This might take longer. This will be optimized in future updates.
+*Note:* This might take longer it would be optimised in upcoming builds 
 
 ## Prerequisites
 
 - React 16.8+ (Hooks support)
+- A Google Gemini API key
 
 ## Usage
 
 ### Basic Implementation
 
 ```tsx
-import {ChatBot} from "react-chatbot-core";
+import {ChatBot} from "react-gemini-chatbot";
 
 function App() {
   return (
     <main>
-      <ChatBot prompt={"hello"} />
+      <ChatBot apiKey={"--gemini api key--"} prompt={"hello gemini ai"} />
     </main>
   )
 }
 
 export default App;
 ```
+
+# Setting Up Google Gemini API Key
+
+To get started with Google Gemini API, you'll need to generate an API key. Follow the steps below to create the key and secure it for your project.
+
+### 1. **Obtain the API Key**
+
+To generate a Google Gemini API key, follow the official guide from Merge Dev. You can access the instructions here: [Google Gemini API Key Documentation](https://www.merge.dev/blog/gemini-api-key).
+
+This documentation will walk you through the process of creating and managing your API key.
+
+### Restrict API Key (Optional but recommended)
+
+- After copying the API key, you can click **Restrict Key** to limit its usage.
+- You can restrict the API key to specific IP addresses, referrers, or HTTP methods to secure your API key further.
 
 ### Install Dependencies in Your Project
 
@@ -88,12 +111,12 @@ Make sure you have the required dependencies installed in your project.
 | `APIStoreResponseDataEndpoint` | string | `""` | _No_ | Add your endpoint url of backend to store every conversation of chatbot in database (e.g., https://localhost:5173/route). |
 | `APIAccessToken` | string | `""` | _No_ | In your endpoint URL of backend, if there is any authorization, you can share your bearer token. |
 | `apiMaxOutputTokens` | number | `2048` | _No_ | Maximum tokens allowed in the API response. |
-| `apiKey` | string | `""` | _Yes_ | Your API key for service (OpenAi, Gemini etc.). |
+| `apiKey` | string | `""` | _Yes_ | Your Google Gemini API key. |
 | `approach` | Array | `[]` | _No_ | The `approach` array is used to prime the Large Language Model (LLM) or Chatbot with a specific conversation style, persona, or expected dialogue flow. Each object in the array represents a single turn in a conversation, defining what the `user` would say and the corresponding, desired response from the `agent` (the LLM/Chatbot). |
 | `backGroundImage` | string | `"https://img.freepik.com/free-vector/light-grey-dots-background_78370-2583.jpg?ga=GA1.1.1236369542.1738934698&semt=ais_hybrid"` | _No_ | To set your own background image, pass the image URL or path as a string (e.g., `"https://placehold.co/600x400"`). |
 | `chatOpen` | boolean | `true` | _No_ | Controls the visibility of the chat window (open or closed). |
 | `chatBotHeight` | string | `"450px"` | _No_ | If you want to change the height of chatbot you have to pass the value eg-("450px")|
-| `chatBotWidth` | string | `"700px"` | _No_ | If you want to change the width of chatbot you have to pass the value eg-("700px")|
+| `chatBotWidth` | string | `"700px"` | _No_ | If you want to change the wieght of chatbot you have to pass the value eg-("700px")|
 | `descriptionOfChatbot` | string | `"Start a conversation by typing a message below"` | _No_ | To display your own description of the chatbot, pass a value as a string. |
 | `enableLeadform` | boolean | `"false"` | _No_ | Set to `true` to enable the LeadForm so users can fill it. If `false`, the form is disabled. |
 | `goodFormatting` | boolean | `true` | _No_ | `goodFormatting` set to true, adds instructions for well-structured, readable responses with appropriate formatting. |
@@ -101,7 +124,7 @@ Make sure you have the required dependencies installed in your project.
 | `headerDescription` | string | `"Ready to help"` | _No_ | To display your own header description for the chatbot, pass a value as a string. |
 | `imageUrl` | string | `"https://img.freepik.com/free-vector/chatbot-chat-message-vectorart_78370-4104.jpg?ga=GA1.1.1236369542.1738934698&semt=ais_hybrid"` | _No_ | URL for the chatbot's avatar image. |
 | `leadForm` | JSON | `{}` | _No_ | The configuration object for the lead form fields. You can customize this object to add/remove fields and define their properties. If not provided, default fields (name, email, phone number, and company name) will be used. |
-| `model` | string | `` | _No_ |  Service or model to use (e.g., "gemini-1.5-flash" or "deepseek-chat"). |
+| `model` | string | `gemini-1.5-flash` | _No_ | Gemini model to use (e.g., "gemini-1.5-flash"). |
 | `prompt` | string | `""` | _Yes_ | System prompt to define the chatbot's behavior. |
 | `temperature` | number | `0.7` | _No_ | Controls the randomness of the responses (0.0-1.0). |
 | `textPosition` | string | `false` | _No_ | By default, the user’s text is displayed on the right side. To change the alignment of the user's text to the left side and AI response to the right, pass true. |
@@ -195,6 +218,31 @@ const leadForm = {
 };
 ```
 
+# Approach Feature
+
+The `approach` feature allows users to set a **zero-shot** approach for the chatbot or language model. In this case, the model is primed with a set of example interactions, enabling it to generate responses based on the patterns in the examples, even when no additional context is provided. However, for some use cases, a **one-shot** or **few-shot** approach might produce output that is more closely aligned with user expectations, especially when more detailed context or instruction is required.
+
+For more details, refer to the [Gemini text generation docs](https://ai.google.dev/gemini-api/docs/text-generation?lang=python#:~:text=In%20this%20case%2C%20the%20prompt%20("Explain%20how%20AI%20works")%20doesn't%20include%20any%20output%20examples%2C%20system%20instructions%2C%20or%20formatting%20information.).
+
+**Approach Array of JSON Example:**
+
+```
+const approach = [
+    {
+      user: "Do you have any listings for homes with a pool?",
+      agent: "Yes, we have several homes with swimming pools available! Could you please let me know your preferred location and budget? I'd be happy to share some options with you."
+    },
+    {
+      user: "How do I know if I can get approved for a mortgage?",
+      agent: "Great question! Mortgage approval usually depends on factors like your credit score, income, debt-to-income ratio, and the size of your down payment. I can connect you with a mortgage lender who can give you a clear idea of your loan eligibility. Would you like me to do that?"
+    },
+    {
+      user: "Can you help me find a property for investment purposes?",
+      agent: "Certainly! Investment properties can generate great returns if chosen wisely. Are you looking for residential or commercial properties? Also, do you have a target location or budget in mind?"
+    }
+  ];
+```
+
 ## Features in Detail
 
 ### Voice Input
@@ -211,9 +259,11 @@ Users can attach files to their messages:
 
 - Click the attachment icon
 - Select a file from their device
-- The file sent by the user will be processed based on the model being used.
-- Files are transmitted as base64-encoded data to the API.
+- The file send by the user get the correct response based on your model you are using
+- Files are sent as base64-encoded data to the API
+- Although the **gemini-1.5-flash** model is intended to support images, users may face issues with image processing. If you're uploading an image, be prepared for potential errors. For PDFs, the model works as expected without issues.
 - **PDFs**: Works flawlessly. The model can extract and analyze text, metadata, and other content from PDF files.
+- **Images**: Currently, images may result in an error when uploaded due to limitations in the model. While the **gemini-1.5-flash** model is intended to handle images, users may encounter issues with image uploads.
 
 ### Emoji Picker
 
@@ -251,7 +301,7 @@ The package relies on the following dependencies:
 
 ## ⚠️ Important Note
 
-**This package is not production-ready yet. The current implementation exposes your API key in the frontend, which is not secure for production environments. Please do not use this in production unless the key is properly secured (e.g., through a proxy or server-side authentication).**
+**This package is not production-ready yet. The current implementation exposes your Google Gemini API key in the frontend, which is not secure for production environments. Please do not use this in production unless the key is properly secured (e.g., through a proxy or server-side authentication).**
 
 **In the current version, the API key is passed directly to the frontend, which makes it vulnerable to misuse. A secure solution will be implemented in future versions.**
 

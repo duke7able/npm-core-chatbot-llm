@@ -1,5 +1,5 @@
 {
-  "name": "react-chatbot-core",
+  "name": "react-gemini-chatbot",
   "version": "1.4.1",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -15,15 +15,15 @@
   },
   "keywords": [
     "react",
-    "AI",
+    "gemini",
+    "ai",
     "react-component",
-    "chatbot",
-    "component"
+    "chatbot"
   ],
   "author": "Shreyan Mehta",
   "license": "MIT",
   "private": false,
-  "description": "Chat bot based on react",
+  "description": "Chat bot based on react specifically using Gemini",
   "peerDependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",

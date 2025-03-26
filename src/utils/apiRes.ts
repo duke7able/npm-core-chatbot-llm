@@ -2,7 +2,7 @@ import { UserMessage } from "../components/ChatBot";
 import { v4 as uuidv4 } from "uuid";
 import { ApiResponsePayload, sendApiResponse } from "./apiBackend";
 
-export type SendMessageToModelParams = {
+export type SendMessageToGeminiParams = {
   apiKey: string;
   modelName: string;
   systemPrompt: string;
@@ -16,13 +16,13 @@ export type SendMessageToModelParams = {
   APIStoreResponseDataEndpoint: string;
   APIAccessToken: string;
   APIHttpMethod?: "POST" | "GET" | "PUT";
-  approach?: Array<{ agent: string; user: string }>;
+  approach?: Array<{agent : string ; user : string}>;
   goodFormatting?: boolean;
   tone?: string;
   useEmoji?: boolean;
 };
 
-interface ModelApiResponse {
+interface GeminiApiResponse {
   candidates: {
     text: string;
     content: {
@@ -54,24 +54,22 @@ export async function sendMessageToModel({
   goodFormatting,
   tone,
   useEmoji,
-}: SendMessageToModelParams) {
-  const apiUrl = ``;
-  // adding prompt
-  let enhancedSystemPrompt = "";
-  if (goodFormatting) {
-    enhancedSystemPrompt +=
-      "Please format your responses with clear structure, using paragraphs, bullet points, and headings when appropriate to make the content easily readable and well-organized. Use proper spacing, line breaks etc to make it more readable. Try to make it concise and to the point if possible.\n\n";
-  }
-  enhancedSystemPrompt += `Please respond in a ${tone} tone of voice.\n\n`;
-  if (useEmoji) {
-    enhancedSystemPrompt +=
-      "Please include appropriate emojis in your responses to make them more engaging😊🎉.\n\n";
-  }
-  let finalSystemPrompt = enhancedSystemPrompt + (systemPrompt || "");
-
+}: SendMessageToGeminiParams) {
+  const apiUrl = `https://generativelanguage.googleapis.com/v1/models/${modelName}:generateContent`;
+    // adding prompt
+    let enhancedSystemPrompt = "";
+    if (goodFormatting) {
+      enhancedSystemPrompt += "Please format your responses with clear structure, using paragraphs, bullet points, and headings when appropriate to make the content easily readable and well-organized. Use proper spacing, line breaks etc to make it more readable. Try to make it concise and to the point if possible.\n\n";
+    }
+    enhancedSystemPrompt += `Please respond in a ${tone} tone of voice.\n\n`;
+    if (useEmoji) {
+      enhancedSystemPrompt += "Please include appropriate emojis in your responses to make them more engaging😊🎉.\n\n";
+    }
+    let finalSystemPrompt = enhancedSystemPrompt + (systemPrompt || "");
+  
   let formattedMessages: Message[] = [];
   if (approach) {
-    approach.forEach((pair) => {
+    approach.forEach(pair => {
       formattedMessages.push({
         role: "user",
         parts: [{ text: pair.user }],
@@ -108,46 +106,30 @@ export async function sendMessageToModel({
     }
   }
 
-  // const requestBody = {
-  //   contents: formattedMessages,
-  //   generationConfig: {
-  //     temperature: temperature,
-  //     maxOutputTokens: apiMaxOutputTokens,
-  //   },
-  // };
-
-  // Check if URL correct for the API
-  // const response = await fetch(`${apiUrl}?key=${apiKey}`, {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify(requestBody),
-  // });
-
-  // if (!response.ok) {
-  //   const errorData = await response.json();
-  //   throw new Error(
-  //     errorData.error?.message || "Failed to get response from Model",
-  //   );
-  // }
-
-  // const data: ModelApiResponse = await response.json();
-  // Sample Output
-  const data: ModelApiResponse = {
-    candidates: [
-      {
-        text: "Hi, this is a test message.",
-        content: {
-          parts: [
-            {
-              text: "Hi, this is a test message.",
-            },
-          ],
-        },
-      },
-    ],
+  const requestBody = {
+    contents: formattedMessages,
+    generationConfig: {
+      temperature: temperature,
+      maxOutputTokens: apiMaxOutputTokens,
+    },
   };
+
+  const response = await fetch(`${apiUrl}?key=${apiKey}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(requestBody),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(
+      errorData.error?.message || "Failed to get response from Gemini"
+    );
+  }
+
+  const data: GeminiApiResponse = await response.json();
 
   let uuid = localStorage.getItem("userUUID");
   if (!uuid) {
@@ -167,7 +149,7 @@ export async function sendMessageToModel({
         APIStoreResponseDataEndpoint,
         APIAccessToken,
         apiPayload,
-        APIHttpMethod || "POST",
+        APIHttpMethod || "POST"
       );
     } catch (error) {
       console.error("Failed to store response data:", error);
@@ -181,6 +163,6 @@ export async function sendMessageToModel({
   ) {
     return data;
   } else {
-    throw new Error("Unexpected response format from Model API");
+    throw new Error("Unexpected response format from Gemini API");
   }
 }

@@ -32,12 +32,9 @@ export const slideIn = keyframes`
   to { transform: translateX(0); opacity: 1; }
 `;
 
-export const ChatContainer = styled(Box, {
-  shouldForwardProp: (prop) =>
-    !["chatBotWidth", "chatBotHeight", "open"].includes(prop as string),
-})<StyledProps>`
-  max-width: ${(props) => (props.chatBotWidth ? props.chatBotWidth : "400px")};
-  height: ${(props) => (props.chatBotHeight ? props.chatBotHeight : "600px")};
+export const ChatContainer = styled(Box) <StyledProps>`
+  max-width: ${(props) => (props.chatBotWidth ? props.chatBotWidth : '400px')};
+  height: ${(props) => (props.chatBotHeight ? props.chatBotHeight : '600px')};
   display: flex;
   flex-direction: column;
   border-radius: 20px;
@@ -45,22 +42,19 @@ export const ChatContainer = styled(Box, {
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
   background-color: #f8faff;
   position: relative;
-  
   ${(props) =>
     !props.open &&
     `
-    display: none;
+    display: none; /* Hide the chat container when closed */
   `}
-
+   /* Media query for smaller screens */
   @media (max-width: 375px) {
     max-width: 375px;
   }
 `;
 
-export const ChatHeader = styled(Box, {
-  shouldForwardProp: (prop) => prop !== "themeColor",
-})<StyledProps>`
-  background: ${({ themeColor }) => themeColor || "purple"};
+export const ChatHeader = styled(Box) <StyledProps>`
+  background: ${(props) => props.themeColor || "purple"};
   color: white;
   padding: 16px;
   display: flex;
@@ -76,18 +70,16 @@ export const ChatTitle = styled(Box)`
   flex-grow: 1; /* Allow title to take available space */
 `;
 
-export const MessagesList = styled(Box, {
-  shouldForwardProp: (prop) => prop !== "backGroundImage",
-})<StyledProps>`
+export const MessagesList = styled(Box) <StyledProps>`
   flex-grow: 1;
   padding: 20px;
   overflow-y: auto;
   background-color: #ffffff;
-  background-image: ${({ backGroundImage }) =>
-    backGroundImage && backGroundImage !== ""
-      ? `url(${backGroundImage})`
+  background-image: ${(props) =>
+    props.backGroundImage && props.backGroundImage !== ""
+      ? `url(${props.backGroundImage})`
       : `url('/backGroundImage.jpg')`};
-  background-size: cover;
+  background-size: cover; 
   background-position: center;
   scroll-behavior: smooth;
 
@@ -105,7 +97,7 @@ export const MessagesList = styled(Box, {
   }
 `;
 
-export const MessageWrapper = styled(Box, { shouldForwardProp: (prop) => prop !== "isUser" && prop!== "textPosition" }) <StyledProps>`
+export const MessageWrapper = styled(Box) <StyledProps>`
   display: flex;
   justify-content: ${({ isUser }) => (isUser ? "flex-end" : "flex-start")};
   justify-content: ${({ textPosition, isUser }) => {
@@ -120,9 +112,7 @@ export const MessageWrapper = styled(Box, { shouldForwardProp: (prop) => prop !=
   animation: ${fadeIn} 0.3s ease-out;
 `;
 
-export const MessageBox = styled(Paper, {
-  shouldForwardProp: (prop) => prop !== "isUser" && prop !== "themeColor",
-})<StyledProps>`
+export const MessageBox = styled(Paper) <StyledProps>`
   display: flex;
   align-items: center;
   padding: 12px 16px;
@@ -137,6 +127,7 @@ export const MessageBox = styled(Paper, {
       : "0 4px 15px rgba(0, 0, 0, 0.05)"};
   animation: ${slideIn} 0.3s ease-out;
 `;
+
 export const EmojiPickerWrapper = styled(Box)`
   position: absolute;
   bottom: 80px;
@@ -159,12 +150,15 @@ export const StyleImage = styled.div`
   align-items: center;
 `;
 
-export const MessageContent = styled(Box, {
-  shouldForwardProp: (prop) => prop !== "isUser" && prop !== "textPosition",
-})<StyledProps>`
+export const MessageContent = styled(Box) <StyledProps>`
   display: flex;
-  flex-direction: ${({ isUser, textPosition }) =>
-    textPosition ? (isUser ? "row" : "row-reverse") : isUser ? "row-reverse" : "row"};
+  flex-direction: ${({ isUser, textPosition }) => {
+    if (textPosition) {
+      return isUser ? "row" : "row-reverse";
+    } else {
+      return isUser ? "row-reverse" : "row";
+    }
+  }};
   align-items: flex-start;
   gap: 12px;
 `;
@@ -175,7 +169,7 @@ export const StyledImage = styled.img`
   object-fit: cover;
 `;
 
-export const StyledAvatar = styled(Avatar,{ shouldForwardProp: (prop) => prop !== "isUser" }) <StyledProps>`
+export const StyledAvatar = styled(Avatar) <StyledProps>`
   width: 38px;
   height: 38px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -269,7 +263,7 @@ export const ActionButton = styled(IconButton)`
   }
 `;
 
-export const TimeStamp = styled(Typography, { shouldForwardProp: (prop) => prop !== "isUser" }) <StyledProps>`
+export const TimeStamp = styled(Typography) <StyledProps>`
   font-size: 11px;
   color: ${({ isUser }) => (isUser ? "rgba(255, 255, 255, 0.7)" : "#9ca3af")};
   margin-top: 4px;
