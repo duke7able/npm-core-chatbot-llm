@@ -80,7 +80,7 @@ export type ChatProps = {
   APIAccessToken?: string;
   APIHttpMethod?: "POST" | "GET" | "PUT";
   chatBotHeight?:string;
-  chatbotWidth?:string;
+  chatBotWidth?:string;
   leadFormHeader?:string;
   leadFormDescription?:string;
   leadFormButtonText?:string;
@@ -111,7 +111,7 @@ const Chat = ({
   APIAccessToken = "",
   APIHttpMethod = "POST",
   chatBotHeight,
-  chatbotWidth,
+  chatBotWidth,
 }: ChatProps) => {
   const [isRecording, setIsRecording] = useState<boolean>(false);
   const [recognition, setRecognition] = useState<any>(null);
@@ -172,14 +172,14 @@ const Chat = ({
     fields: form?.fields ?? defaultFormConfig.fields,
   };
   const handleFormSubmit = (formData: any) => {
-    console.log("Form data received in Chat component:", formData);
+    // console.log("Form data received in Chat component:", formData);
     localStorage.setItem("data", formData);
 
     let apiEndpoint = "";
     let apiAccessToken = "";
     let apiHttpMethod = "POST";
 
-    console.log(form?.submitApiEndPoint);
+    // console.log(form?.submitApiEndPoint);
     if (APIStoreResponseDataEndpoint && APIStoreResponseDataEndpoint !== "") {
       apiEndpoint = APIStoreResponseDataEndpoint;
       apiAccessToken = APIAccessToken;
@@ -263,7 +263,7 @@ const Chat = ({
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
-      console.log("Selected file:", file.name, file.size, file.type);
+      // console.log("Selected file:", file.name, file.size, file.type);
       setAttachment(file);
     } else {
       console.log("No file selected.");
@@ -352,7 +352,7 @@ const Chat = ({
         </IconButton>
       )}
 
-      <ChatContainer open={isChatOpen} chatbotWidth={chatbotWidth} chatBotHeight={chatBotHeight}>
+      <ChatContainer open={isChatOpen} chatBotWidth={chatBotWidth} chatBotHeight={chatBotHeight}>
         <ChatHeader themeColor={themeColor}>
           <ChatTitle>
             <StyleImage>
@@ -435,6 +435,7 @@ const Chat = ({
                               {msg.text && msg.text.trim() !== "" && (
                                 <Typography
                                   variant="body1"
+                                  component={"span"}
                                   sx={{
                                     color: msg.isUser ? "white" : "#374151",
                                     wordBreak: "break-word",
@@ -450,6 +451,7 @@ const Chat = ({
                           {msg.type === "text" && (
                             <Typography
                               variant="body1"
+                              component={"span"}
                               sx={{
                                 color: msg.isUser ? "white" : "#374151",
                                 wordBreak: "break-word",

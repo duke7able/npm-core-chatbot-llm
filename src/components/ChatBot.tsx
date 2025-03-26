@@ -42,7 +42,7 @@ type ChatbotProps = {
   tone?: string;
   useEmoji?: boolean;
   chatBotHeight?:string;
-  chatbotWidth?:string;
+  chatBotWidth?:string;
 };
 
 export type UserMessage = {
@@ -81,7 +81,7 @@ function ChatBot({
   tone,
   useEmoji,
   chatBotHeight,
-  chatbotWidth,
+  chatBotWidth,
 }: ChatbotProps) {
   // all states
   const [messages, setMessages] = useState<UserMessage[] | []>([]);
@@ -147,7 +147,7 @@ function ChatBot({
         useEmoji,
       });
 
-      console.log(botResponse.candidates[0].content.parts[0].text);
+      // console.log(botResponse.candidates[0].content.parts[0].text);
 
       setMessages([
         ...updatedMessages,
@@ -236,7 +236,7 @@ function ChatBot({
         APIAccessToken={APIAccessToken}
         APIHttpMethod={APIHttpMethod}
         chatBotHeight={chatBotHeight}
-        chatbotWidth={chatbotWidth}
+        chatBotWidth={chatBotWidth}
       />
     </Box>
   );

@@ -8,7 +8,7 @@ import {
   Avatar,
   Paper,
 } from "@mui/material";
-
+import { shouldForwardProp } from "@mui/system";
 
 interface StyledProps {
   isUser?: boolean;
@@ -17,7 +17,7 @@ interface StyledProps {
   textPosition?: boolean;
   backGroundImage?: string;
   open?: boolean;
-  chatbotWidth?: string | number;
+  chatBotWidth?: string | number;
   chatBotHeight?: string | number;
 }
 
@@ -32,9 +32,12 @@ export const slideIn = keyframes`
   to { transform: translateX(0); opacity: 1; }
 `;
 
-export const ChatContainer = styled(Box) <StyledProps>`
-  max-width: ${(props) => (props.chatbotWidth ? props.chatbotWidth : '400px')};
-  height: ${(props) => (props.chatBotHeight ? props.chatBotHeight : '600px')};
+export const ChatContainer = styled(Box, {
+  shouldForwardProp: (prop) =>
+    !["chatBotWidth", "chatBotHeight", "open"].includes(prop as string),
+})<StyledProps>`
+  max-width: ${(props) => (props.chatBotWidth ? props.chatBotWidth : "400px")};
+  height: ${(props) => (props.chatBotHeight ? props.chatBotHeight : "600px")};
   display: flex;
   flex-direction: column;
   border-radius: 20px;
@@ -42,19 +45,22 @@ export const ChatContainer = styled(Box) <StyledProps>`
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
   background-color: #f8faff;
   position: relative;
+  
   ${(props) =>
     !props.open &&
     `
-    display: none; /* Hide the chat container when closed */
+    display: none;
   `}
-   /* Media query for smaller screens */
+
   @media (max-width: 375px) {
     max-width: 375px;
   }
 `;
 
-export const ChatHeader = styled(Box) <StyledProps>`
-  background: ${(props) => props.themeColor || "purple"};
+export const ChatHeader = styled(Box, {
+  shouldForwardProp: (prop) => prop !== "themeColor",
+})<StyledProps>`
+  background: ${({ themeColor }) => themeColor || "purple"};
   color: white;
   padding: 16px;
   display: flex;
@@ -70,16 +76,18 @@ export const ChatTitle = styled(Box)`
   flex-grow: 1; /* Allow title to take available space */
 `;
 
-export const MessagesList = styled(Box) <StyledProps>`
+export const MessagesList = styled(Box, {
+  shouldForwardProp: (prop) => prop !== "backGroundImage",
+})<StyledProps>`
   flex-grow: 1;
   padding: 20px;
   overflow-y: auto;
   background-color: #ffffff;
-  background-image: ${(props) =>
-    props.backGroundImage && props.backGroundImage !== ""
-      ? `url(${props.backGroundImage})`
+  background-image: ${({ backGroundImage }) =>
+    backGroundImage && backGroundImage !== ""
+      ? `url(${backGroundImage})`
       : `url('/backGroundImage.jpg')`};
-  background-size: cover; 
+  background-size: cover;
   background-position: center;
   scroll-behavior: smooth;
 
@@ -97,7 +105,7 @@ export const MessagesList = styled(Box) <StyledProps>`
   }
 `;
 
-export const MessageWrapper = styled(Box) <StyledProps>`
+export const MessageWrapper = styled(Box, { shouldForwardProp: (prop) => prop !== "isUser" && prop!== "textPosition" }) <StyledProps>`
   display: flex;
   justify-content: ${({ isUser }) => (isUser ? "flex-end" : "flex-start")};
   justify-content: ${({ textPosition, isUser }) => {
@@ -112,7 +120,9 @@ export const MessageWrapper = styled(Box) <StyledProps>`
   animation: ${fadeIn} 0.3s ease-out;
 `;
 
-export const MessageBox = styled(Paper) <StyledProps>`
+export const MessageBox = styled(Paper, {
+  shouldForwardProp: (prop) => prop !== "isUser" && prop !== "themeColor",
+})<StyledProps>`
   display: flex;
   align-items: center;
   padding: 12px 16px;
@@ -127,7 +137,6 @@ export const MessageBox = styled(Paper) <StyledProps>`
       : "0 4px 15px rgba(0, 0, 0, 0.05)"};
   animation: ${slideIn} 0.3s ease-out;
 `;
-
 export const EmojiPickerWrapper = styled(Box)`
   position: absolute;
   bottom: 80px;
@@ -150,15 +159,12 @@ export const StyleImage = styled.div`
   align-items: center;
 `;
 
-export const MessageContent = styled(Box) <StyledProps>`
+export const MessageContent = styled(Box, {
+  shouldForwardProp: (prop) => prop !== "isUser" && prop !== "textPosition",
+})<StyledProps>`
   display: flex;
-  flex-direction: ${({ isUser, textPosition }) => {
-    if (textPosition) {
-      return isUser ? "row" : "row-reverse";
-    } else {
-      return isUser ? "row-reverse" : "row";
-    }
-  }};
+  flex-direction: ${({ isUser, textPosition }) =>
+    textPosition ? (isUser ? "row" : "row-reverse") : isUser ? "row-reverse" : "row"};
   align-items: flex-start;
   gap: 12px;
 `;
@@ -169,7 +175,7 @@ export const StyledImage = styled.img`
   object-fit: cover;
 `;
 
-export const StyledAvatar = styled(Avatar) <StyledProps>`
+export const StyledAvatar = styled(Avatar,{ shouldForwardProp: (prop) => prop !== "isUser" }) <StyledProps>`
   width: 38px;
   height: 38px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -263,7 +269,7 @@ export const ActionButton = styled(IconButton)`
   }
 `;
 
-export const TimeStamp = styled(Typography) <StyledProps>`
+export const TimeStamp = styled(Typography, { shouldForwardProp: (prop) => prop !== "isUser" }) <StyledProps>`
   font-size: 11px;
   color: ${({ isUser }) => (isUser ? "rgba(255, 255, 255, 0.7)" : "#9ca3af")};
   margin-top: 4px;

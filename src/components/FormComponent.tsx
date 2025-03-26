@@ -149,7 +149,7 @@ const FormComponent: React.FC<FormProps> = ({
       setIsSubmitting(true);
       // Simulate API call delay
       setTimeout(() => {
-        console.log("Form data:", formValues);
+        // console.log("Form data:", formValues);
         onSubmit(formValues);
         setIsSubmitting(false);
         setSubmitSuccess(true);
