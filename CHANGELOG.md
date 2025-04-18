@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## 1.4.2 (2025-03-26)
+## 1.4.3 (2025-03-21)
+
+### Feature
+
+- Z-Index Propr added.
+
+## 1.4.2 (2025-03-21)
 
 ### Fix
 
@@ -63,7 +69,6 @@ All notable changes to this project will be documented in this file. See [standa
 ### Feature
 
 - Add a demo video of lead form in Readme.md file.
-
 
 ## 1.3.4 (2025-03-10)
 

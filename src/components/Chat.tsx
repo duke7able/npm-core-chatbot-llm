@@ -16,7 +16,7 @@ import {
   Image,
   Description,
   ChatBubble,
-  Cancel,
+  Cancel, 
 } from "@mui/icons-material";
 import EmojiPicker, { EmojiClickData } from "emoji-picker-react";
 import Markdown from "react-markdown";
@@ -365,6 +365,28 @@ const Chat = ({
               <Typography variant="caption" sx={{ opacity: 0.8 }}>
                 {isLoading ? "Thinking..." : headerDescription}
               </Typography>
+              {/* Powered by Section */}
+              <Box 
+        sx={{ 
+          
+          py: 0.8, 
+          px: 2, 
+          bgcolor: "rgba(255,255,255,0.1)", 
+          borderRadius: "8px", 
+          display: "flex", 
+          alignItems: "center", 
+          justifyContent: "center",
+          gap: 1,
+          width: "fit-content"
+        }}
+      >
+        <Typography 
+          variant="caption" 
+          sx={{ fontWeight: 500, fontStyle: "italic", color: "#f1f1f1" }}
+        >
+          Powered by <strong style={{ color: "#FFD700" }}>Asambhav Chatbot</strong>
+        </Typography>
+      </Box>
             </Box>
           </ChatTitle>
           <IconButton onClick={toggleChat} sx={{ color: "white" }}>

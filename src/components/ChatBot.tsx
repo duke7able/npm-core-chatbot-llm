@@ -20,6 +20,7 @@ type ChatbotProps = {
   titleOfChatBot?: string;
   descriptionOfChatbot?: string;
   headerDescription?: string;
+  zIndex:number;
   themeColor?: string;
   backGroundImage?: string;
   APIStoreResponseDataEndpoint?: string;
@@ -69,6 +70,7 @@ function ChatBot({
   titleOfChatBot = "",
   descriptionOfChatbot = "Start a conversation by typing a message below",
   headerDescription = "Ready to help",
+  zIndex = 1000,
   themeColor = "",
   backGroundImage = "",
   APIStoreResponseDataEndpoint = "",
@@ -195,13 +197,14 @@ function ChatBot({
     });
   };
 
-  return (
+  return (<>
     <Box
       sx={{
         display: "flex",
         position: "fixed",
         justifyContent: "flex-end",
         alignItems: "flex-start",
+        zIndex:zIndex,
         margin: 0,
         bottom: 0,
         right: 0,
@@ -216,7 +219,7 @@ function ChatBot({
           padding: 2,
         },
       }}
-    >
+      >
       <Chat
         messages={messages}
         isLoading={isLoading}
@@ -237,8 +240,10 @@ function ChatBot({
         APIHttpMethod={APIHttpMethod}
         chatBotHeight={chatBotHeight}
         chatBotWidth={chatBotWidth}
-      />
+        />
     </Box>
+        
+        </>
   );
 }
 
