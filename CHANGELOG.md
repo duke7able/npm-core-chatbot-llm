@@ -2,11 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## 1.4.1 (2025-03-18)
+## 1.4.1 (2025-03-21)
 
-### Changes for Gemini
+### Fix
 
-- Corrected or added gemini things
+- Commented multiple `console.log`
+- Added `shouldForwardProp` for styling components avoiding DOM issues.
+- Changed component of Typography to span for fixing the `<p>` decendant of `<p>` issue.
 
 ## 1.4.0 (2025-03-18)
 

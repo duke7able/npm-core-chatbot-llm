@@ -2,8 +2,10 @@ import { UserMessage } from "../components/ChatBot";
 import { v4 as uuidv4 } from "uuid";
 import { ApiResponsePayload, sendApiResponse } from "./apiBackend";
 
-export type SendMessageToModelParams = {
+export type SendMessageToOpenAIParams = {
   apiKey: string;
+  organizationId: string;
+  projectId: string;
   modelName: string;
   systemPrompt: string;
   userMessage: string;
@@ -22,22 +24,48 @@ export type SendMessageToModelParams = {
   useEmoji?: boolean;
 };
 
-interface ModelApiResponse {
-  candidates: {
-    text: string;
-    content: {
-      parts: {
-        text: string;
-      }[];
+interface OpenAIApiResponse {
+  id: string;
+  object: string;
+  created: number;
+  model: string;
+  choices: {
+    index: number;
+    message: {
+      role: string;
+      content: string;
+      refusal: string | null;
+      annotations: any[];
     };
+    logprobs: any | null;
+    finish_reason: string;
   }[];
+  usage: {
+    prompt_tokens: number;
+    completion_tokens: number;
+    total_tokens: number;
+    prompt_tokens_details: {
+      cached_tokens: number;
+      audio_tokens: number;
+    };
+    completion_tokens_details: {
+      reasoning_tokens: number;
+      audio_tokens: number;
+      accepted_prediction_tokens: number;
+      rejected_prediction_tokens: number;
+    };
+  };
+  service_tier: string;
 }
+
 interface Message {
-  role: "model" | "user";
-  parts: { text: string }[];
+  role: "system" | "developer" | "user" | "assistant";
+  content: string;
 }
 export async function sendMessageToModel({
   apiKey,
+  organizationId,
+  projectId,
   modelName,
   systemPrompt,
   userMessage,
@@ -54,8 +82,8 @@ export async function sendMessageToModel({
   goodFormatting,
   tone,
   useEmoji,
-}: SendMessageToModelParams) {
-  const apiUrl = `https://generativelanguage.googleapis.com/v1/models/${modelName}:generateContent`;
+}: SendMessageToOpenAIParams) {
+  const apiUrl = `https://api.openai.com/v1/chat/completions`;
   // adding prompt
   let enhancedSystemPrompt = "";
   if (goodFormatting) {
@@ -71,14 +99,14 @@ export async function sendMessageToModel({
 
   let formattedMessages: Message[] = [];
   if (approach) {
-    approach.forEach(pair => {
+    approach.forEach((pair) => {
       formattedMessages.push({
         role: "user",
-        parts: [{ text: pair.user }],
+        content: pair.user,
       });
       formattedMessages.push({
-        role: "model",
-        parts: [{ text: pair.agent }],
+        role: "assistant",
+        content: pair.agent,
       });
     });
   }
@@ -88,12 +116,12 @@ export async function sendMessageToModel({
   }
 
   formattedMessages.push({
-    role: "model",
-    parts: [{ text: finalSystemPrompt }],
+    role: "system",
+    content: finalSystemPrompt,
   });
   formattedMessages.push({
     role: "user",
-    parts: [{ text: userMessageText }],
+    content: userMessageText,
   });
 
   if (useContext) {
@@ -101,37 +129,45 @@ export async function sendMessageToModel({
       const msg = previousMessages[i];
       if (msg.type === "text") {
         formattedMessages.push({
-          role: msg.isUser ? "user" : "model",
-          parts: [{ text: msg.text }],
+          role: msg.isUser ? "user" : "assistant",
+          content: msg.text,
         });
       }
     }
   }
 
   const requestBody = {
-    contents: formattedMessages,
-    generationConfig: {
-      temperature: temperature,
-      maxOutputTokens: apiMaxOutputTokens,
-    },
+    max_completion_tokens: apiMaxOutputTokens,
+    temperature: temperature,
+    model: modelName,
+    messages: formattedMessages,
   };
 
-  const response = await fetch(`${apiUrl}?key=${apiKey}`, {
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
+  headers.append("Authorization", `Bearer ${apiKey}`);
+  if (organizationId.length > 0) {
+    headers.append("OpenAI-Organization", `${organizationId}`);
+  }
+  if (projectId.length > 0) {
+    headers.append("OpenAI-Project", `${projectId}`);
+  }
+
+  const response = await fetch(`${apiUrl}`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers,
     body: JSON.stringify(requestBody),
   });
 
   if (!response.ok) {
     const errorData = await response.json();
     throw new Error(
-      errorData.error?.message || "Failed to get response from Gemini"
+      errorData.error?.message || "Failed to get response from Model",
     );
   }
 
-  const data: ModelApiResponse = await response.json();
+  const data: OpenAIApiResponse = await response.json();
+  // Sample Output
 
   let uuid = localStorage.getItem("userUUID");
   if (!uuid) {
@@ -143,7 +179,7 @@ export async function sendMessageToModel({
     const apiPayload: ApiResponsePayload = {
       userUUID: uuid,
       userMessage: userMessageText,
-      modelMessage: data.candidates[0].content.parts[0].text,
+      modelMessage: data.choices[0].message.content,
     };
 
     try {
@@ -158,13 +194,13 @@ export async function sendMessageToModel({
     }
   }
   if (
-    data.candidates &&
-    data.candidates[0] &&
-    data.candidates[0].content &&
-    data.candidates[0].content.parts
+    data.choices &&
+    data.choices[0] &&
+    data.choices[0].message &&
+    data.choices[0].message.content
   ) {
     return data;
   } else {
-    throw new Error("Unexpected response format from Gemini API");
+    throw new Error("Unexpected response format from Model API");
   }
 }

@@ -8,6 +8,8 @@ import { FormField } from "./FormComponent";
 
 type ChatbotProps = {
   apiKey: string;
+  organizationId: string;
+  projectId: string;
   prompt: string;
   model?: string;
   header?: string;
@@ -31,10 +33,10 @@ type ChatbotProps = {
     submitApiEndPoint?: string;
     submitApiAccessToken?: string;
     submitApiHttpMethod?: "POST" | "GET" | "PUT";
-    leadFormHeader?:string;
-    leadFormDescription?:string;
-    leadFormButtonText?:string;
-    LFCloseButton?:boolean;
+    leadFormHeader?: string;
+    leadFormDescription?: string;
+    leadFormButtonText?: string;
+    LFCloseButton?: boolean;
   };
   enableLeadForm?: boolean;
   approach?: Array<{ agent: string; user: string }>;
@@ -57,8 +59,10 @@ export type UserMessage = {
 
 function ChatBot({
   apiKey,
+  organizationId = "",
+  projectId = "",
   prompt,
-  model = "gemini-2.0-flash",
+  model = "gpt-4o-mini",
   header = "ChatOrbit",
   temperature = 0.7,
   useContext = false,
@@ -90,7 +94,7 @@ function ChatBot({
   // handler function
   const handleMessageBingSend = async (
     messageText: string,
-    attachment: File | null
+    attachment: File | null,
   ) => {
     let userMessage: UserMessage;
     if (attachment) {
@@ -129,6 +133,8 @@ function ChatBot({
 
       const botResponse = await sendMessageToModel({
         apiKey,
+        organizationId,
+        projectId,
         modelName: model,
         systemPrompt: prompt,
         userMessage: messageToSend,
@@ -147,14 +153,14 @@ function ChatBot({
         useEmoji,
       });
 
-      console.log(botResponse.candidates[0].content.parts[0].text);
+      // console.log(botResponse.candidates[0].content.parts[0].text);
 
       setMessages([
         ...updatedMessages,
         {
           isUser: false,
           type: "text",
-          text: botResponse.candidates[0].content.parts[0].text,
+          text: botResponse.choices[0].message.content,
           timestamp: new Date().toLocaleString(),
         },
       ]);
@@ -178,7 +184,7 @@ function ChatBot({
 
   // helper function
   const readFileContent = (
-    file: File
+    file: File,
   ): Promise<string | ArrayBuffer | null> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();

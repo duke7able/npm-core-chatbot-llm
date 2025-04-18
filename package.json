@@ -1,5 +1,5 @@
 {
-  "name": "react-gemini-chatbot",
+  "name": "react-openai-chatbot",
   "version": "1.4.0",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -11,22 +11,21 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/duke7able/npm-core-chatbot-llm/tree/GEMINI"
+    "url": "https://github.com/duke7able/npm-core-chatbot-llm/tree/OPENAI"
   },
   "keywords": [
     "react",
-    "gemini",
-    "component",
-    "AI",
-    "Artificial Intelligence",
-    "RAG",
-    "google",
-    "google-chatbot"
+    "ai",
+    "react-component",
+    "chatbot",
+    "openai",
+    "chatGPT",
+    "GPT"
   ],
   "author": "Shreyan Mehta",
   "license": "MIT",
   "private": false,
-  "description": "Chat bot based on react and powered by GEMINI which works out of box and takes less than a minute to get running",
+  "description": "Chat bot based on react and powered by OPENAI (ChatGPT) which works out of box and takes less than a minute to get running",
   "peerDependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
@@ -57,6 +56,5 @@
   },
   "dependencies": {
     "uuid": "^11.1.0"
-  },
-  "homepage": "https://npmreactgeminichatbot.asambhav.org.in"
+  }
 }
