@@ -2,11 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 1.4.4 (2025-04-21)
+
+### Feature
+
+- Added new prop `pathToEmbeddedData`.
+- Added RAG for vectorized data. Semantic search using cosine similarity search.
+- Updated `README.MD` with details for RAG implementation.
+
 ## 1.4.3 (2025-03-21)
 
 ### Feature
 
-- Z-Index Propr added.
+- Z-Index Prop added.
 
 ## 1.4.2 (2025-03-21)
 

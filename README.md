@@ -30,10 +30,10 @@ A modern, customizable React chatbot component that integrates with Google's Gem
 ### Demo
 
 <p align="center">
-  <img src="/public/newchatbot.gif" alt="React Gemini Chatbot" width="35%" height="50%" />
+  <img src="./public/newchatbot.gif" alt="React Gemini Chatbot" width="35%" height="50%" />
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="/public/newleadform.gif" alt="lead form video" width="35%" height="50%"/>
+  <img src="./public/newleadform.gif" alt="lead form video" width="35%" height="50%"/>
 </p>
 
 ## Features
@@ -133,6 +133,42 @@ Make sure you have the required dependencies installed in your project.
 | `tone` | string | `"formal"` | _No_ | If specified, instructs the model to respond in the requested tone. |
 | `useContext` | boolean | `false` | _No_ | Whether to maintain conversation context. |
 | `useEmoji` | boolean | `false` | _No_ | When set to true, instructs the model to include appropriate emojis in responses. |
+| `pathToEmbeddedData` | string | `""` | _No_ | When a path is provided, that specific json data is used for RAG query. By default is an empty string. |
+
+# RAG using semantic search
+
+- **`pathToEmbeddedData`**: If you want to have some kind of data from where we can retrive data and send to LLM, you can simply add the path to that file, from your applications public folder .i.e `public/path_to_json.json`.
+
+- Generated Embeddings should be of 768D otherwise it won't work.
+
+- The JSON file should follow this json schema:
+```
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id", "text", "embedding"],
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "text": {
+        "type": "string"
+      },
+      "embedding": {
+        "type": "array",
+        "items": {
+          "type": "number"
+        },
+        "minItems": 768,
+    "maxItems": 768
+      }
+    },
+    "additionalProperties": false
+  }
+}
+```
 
 # Backend Api To Store Data
 

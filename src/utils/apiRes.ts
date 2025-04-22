@@ -1,6 +1,7 @@
 import { UserMessage } from "../components/ChatBot";
 import { v4 as uuidv4 } from "uuid";
 import { ApiResponsePayload, sendApiResponse } from "./apiBackend";
+import { loadEmbeddings, findBestMatch } from "./embeddings";
 
 export type SendMessageToGeminiParams = {
   apiKey: string;
@@ -20,6 +21,7 @@ export type SendMessageToGeminiParams = {
   goodFormatting?: boolean;
   tone?: string;
   useEmoji?: boolean;
+  pathToEmbeddedData?: string;
 };
 
 interface GeminiApiResponse {
@@ -54,7 +56,10 @@ export async function sendMessageToModel({
   goodFormatting,
   tone,
   useEmoji,
+  pathToEmbeddedData,
 }: SendMessageToGeminiParams) {
+
+
   const apiUrl = `https://generativelanguage.googleapis.com/v1/models/${modelName}:generateContent`;
     // adding prompt
     let enhancedSystemPrompt = "";
@@ -64,6 +69,14 @@ export async function sendMessageToModel({
     enhancedSystemPrompt += `Please respond in a ${tone} tone of voice.\n\n`;
     if (useEmoji) {
       enhancedSystemPrompt += "Please include appropriate emojis in your responses to make them more engaging😊🎉.\n\n";
+    }
+    if(pathToEmbeddedData !== "" && pathToEmbeddedData !== undefined) {
+      const jsonData = await loadEmbeddings(pathToEmbeddedData);
+      
+      const bestMatch = await findBestMatch(apiKey, userMessage, jsonData);
+      console.log("Best match:", bestMatch);
+      enhancedSystemPrompt += `The best match for the User query is:\n\n ${bestMatch.text}\n\n`;
+      
     }
     let finalSystemPrompt = enhancedSystemPrompt + (systemPrompt || "");
   

@@ -13,6 +13,7 @@ type ChatbotProps = {
   header?: string;
   temperature?: number;
   useContext?: boolean;
+  pathToEmbeddedData?: string;
   apiMaxOutputTokens?: number;
   imageUrl?: string;
   textPosition?: boolean;
@@ -84,6 +85,7 @@ function ChatBot({
   useEmoji,
   chatBotHeight,
   chatBotWidth,
+  pathToEmbeddedData = "",
 }: ChatbotProps) {
   // all states
   const [messages, setMessages] = useState<UserMessage[] | []>([]);
@@ -147,6 +149,7 @@ function ChatBot({
         goodFormatting,
         tone,
         useEmoji,
+        pathToEmbeddedData,
       });
 
       // console.log(botResponse.candidates[0].content.parts[0].text);
