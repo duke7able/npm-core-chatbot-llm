@@ -1,6 +1,6 @@
 {
   "name": "react-gemini-chatbot",
-  "version": "1.4.4",
+  "version": "1.4.5",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
@@ -11,8 +11,9 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/duke7able/npm-core-chatbot-llm/tree/GEMINI"
   },
+  "homepage": "https://npmreactgeminichatbot.asambhav.org.in/",
   "keywords": [
     "react",
     "gemini",
@@ -23,7 +24,7 @@
   "author": "Shreyan Mehta",
   "license": "MIT",
   "private": false,
-  "description": "Chat bot based on react specifically using Gemini",
+  "description": "Chat bot based on react and powered by Gemini which works out of box and takes less than a minute to get running",
   "peerDependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
