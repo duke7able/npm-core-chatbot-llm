@@ -28,3 +28,6 @@ packageTest
 *.njsproj
 *.sln
 *.sw?
+
+# any random zip files for any packages i might try on
+*.tgz
