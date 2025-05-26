@@ -2,6 +2,9 @@ import { UserMessage } from "../components/ChatBot";
 import { v4 as uuidv4 } from "uuid";
 import { ApiResponsePayload, sendApiResponse } from "./apiBackend";
 import { loadEmbeddings, findBestMatch } from "./embeddings";
+import jailbreakJson from '../utils/jailbreakKeywords';
+import { basicProcessPrompt } from "../utils/promptSanitizer";
+import { advancedProcessPrompt } from "../utils/promptSanitizer";
 
 export type SendMessageToGeminiParams = {
   apiKey: string;
@@ -22,6 +25,8 @@ export type SendMessageToGeminiParams = {
   tone?: string;
   useEmoji?: boolean;
   pathToEmbeddedData?: string;
+  promptExemptions?:string,
+  enableJailbreakSecurity?:Boolean,
 };
 
 interface GeminiApiResponse {
@@ -57,6 +62,8 @@ export async function sendMessageToModel({
   tone,
   useEmoji,
   pathToEmbeddedData,
+  promptExemptions,
+  enableJailbreakSecurity
 }: SendMessageToGeminiParams) {
 
 
@@ -67,6 +74,10 @@ export async function sendMessageToModel({
       enhancedSystemPrompt += "Please format your responses with clear structure, using paragraphs, bullet points, and headings when appropriate to make the content easily readable and well-organized. Use proper spacing, line breaks etc to make it more readable. Try to make it concise and to the point if possible.\n\n";
     }
     enhancedSystemPrompt += `Please respond in a ${tone} tone of voice.\n\n`;
+    if(promptExemptions){
+      const formattedExemptions = promptExemptions.split(',').map(str => `- ${str.trim()}`).join('\n');
+      enhancedSystemPrompt += `Exemptions (things you must avoid): \n${formattedExemptions} \nIf a question is irrelevant or off-topic, respond with: \n"I'm here to assist only with [specific task]. Please keep your questions related to that." \n\n`
+    }
     if (useEmoji) {
       enhancedSystemPrompt += "Please include appropriate emojis in your responses to make them more engaging😊🎉.\n\n";
     }
@@ -93,7 +104,13 @@ export async function sendMessageToModel({
       });
     });
   }
-  let userMessageText = userMessage;
+  // let userMessageText = userMessage;
+  let userMessageText = "";
+  if(enableJailbreakSecurity){
+    userMessageText += await advancedProcessPrompt(userMessage,jailbreakJson,apiKey,apiUrl)
+  }else{
+    userMessageText += basicProcessPrompt(userMessage,jailbreakJson)
+  }
   if (fileContent) {
     userMessageText += `\n\nFile Content (${fileName}): ${fileContent}`;
   }

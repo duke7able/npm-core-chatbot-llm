@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 1.5.1 (2025-05-26)
+
+### Feature
+
+- Added new props `exemptions`, `enableJailbreakSecurity` and `chatIconText`.
+- Added a list of common jailbreak keywords.
+- Added functions to detect jailbreak keywords and replacing them using Gemini.
+- Updated `README.MD` with details for the new feature implementation.
+
 ## 1.4.7 (2025-05-24)
 
 ### Fix

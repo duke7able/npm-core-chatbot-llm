@@ -1,6 +1,6 @@
 {
   "name": "react-gemini-chatbot",
-  "version": "1.4.7",
+  "version": "1.5.1",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
@@ -44,6 +44,7 @@
     "@rollup/plugin-node-resolve": "^16.0.0",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
+    "@vitejs/plugin-react": "^4.3.4",
     "emoji-picker-react": "^4.12.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -51,7 +52,8 @@
     "rollup": "^4.34.9",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-typescript2": "^0.36.0",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.2",
+    "vite": "^6.2.3"
   },
   "dependencies": {
     "uuid": "^11.1.0"

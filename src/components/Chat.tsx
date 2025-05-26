@@ -15,7 +15,7 @@ import {
   MicOff,
   Image,
   Description,
-  ChatBubble,
+  // ChatBubble,
   Cancel, 
 } from "@mui/icons-material";
 import EmojiPicker, { EmojiClickData } from "emoji-picker-react";
@@ -44,6 +44,7 @@ import {
   StyledImage,
   ChatTitle,
   StyleImage,
+  IconImage,
 } from "../utils/chatStyle";
 import FormComponent, { FormField } from "./FormComponent";
 import { sendApiForm } from "../utils/apiFormBackend";
@@ -84,6 +85,7 @@ export type ChatProps = {
   leadFormHeader?:string;
   leadFormDescription?:string;
   leadFormButtonText?:string;
+  chatIconText?:string;
 };
 
 // Speech Recognition type definition
@@ -112,6 +114,7 @@ const Chat = ({
   APIHttpMethod = "POST",
   chatBotHeight,
   chatBotWidth,
+  chatIconText = "How can i help you?"
 }: ChatProps) => {
   const [isRecording, setIsRecording] = useState<boolean>(false);
   const [recognition, setRecognition] = useState<any>(null);
@@ -335,12 +338,25 @@ const Chat = ({
   return (
     <Box>
       {!isChatOpen && (
+        <Box
+        sx={{
+          position: "fixed",
+          bottom: 20,
+          right: 20,
+          display: "flex",
+          gap:1,
+          alignItems: "center",
+          justifyContent: "space-between", 
+        }}
+      >
+        <Typography variant="h6">
+          {chatIconText} 
+        </Typography>
+      
         <IconButton
           onClick={toggleChat}
           sx={{
-            position: "fixed",
-            bottom: 20,
-            right: 20,
+            padding:0,
             bgcolor: themeColor || "purple",
             color: "white",
             "&:hover": {
@@ -348,8 +364,12 @@ const Chat = ({
             },
           }}
         >
-          <ChatBubble />
+          <IconImage>
+            <StyledImage src={parseGoogleDriveLink(imageUrl || "")} />
+          </IconImage>
         </IconButton>
+      </Box>
+        
       )}
 
       <ChatContainer open={isChatOpen} chatBotWidth={chatBotWidth} chatBotHeight={chatBotHeight}>

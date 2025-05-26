@@ -45,6 +45,9 @@ type ChatbotProps = {
   useEmoji?: boolean;
   chatBotHeight?:string;
   chatBotWidth?:string;
+  exemptions?:string;
+  enableJailbreakSecurity?:Boolean;
+  chatIconText?:string;
 };
 
 export type UserMessage = {
@@ -86,6 +89,9 @@ function ChatBot({
   chatBotHeight,
   chatBotWidth,
   pathToEmbeddedData = "",
+  exemptions,
+  enableJailbreakSecurity,
+  chatIconText="How can i help you?"
 }: ChatbotProps) {
   // all states
   const [messages, setMessages] = useState<UserMessage[] | []>([]);
@@ -150,6 +156,8 @@ function ChatBot({
         tone,
         useEmoji,
         pathToEmbeddedData,
+        promptExemptions:exemptions,
+        enableJailbreakSecurity
       });
 
       // console.log(botResponse.candidates[0].content.parts[0].text);
@@ -243,9 +251,10 @@ function ChatBot({
         APIHttpMethod={APIHttpMethod}
         chatBotHeight={chatBotHeight}
         chatBotWidth={chatBotWidth}
+        chatIconText={chatIconText}
         />
     </Box>
-        
+
         </>
   );
 }
